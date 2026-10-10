@@ -56,6 +56,18 @@ namespace HierarchyDecorator
 
             EditorApplication.hierarchyChanged -= OnHierarchyChange;
             EditorApplication.hierarchyChanged += OnHierarchyChange;
+
+#if UNITY_6000_6_OR_NEWER
+            NewHierarchyBinder.Initialize();
+#endif
+        }
+
+        /// <summary>
+        /// Get or create the cached item for a GameObject. Used by the UI Toolkit hierarchy, which has no per-row GUI callback.
+        /// </summary>
+        internal static HierarchyItem GetItem(EntityId id, GameObject instance)
+        {
+            return GetNext(id, instance);
         }
 
         private static void OnHierarchyChange()
