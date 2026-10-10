@@ -12,9 +12,9 @@ namespace HierarchyDecorator
     {
         // --- Scene Data
 
-        private static Dictionary<int, HierarchyItem> lookup = new Dictionary<int, HierarchyItem>();
+        private static Dictionary<EntityId, HierarchyItem> lookup = new Dictionary<EntityId, HierarchyItem>();
         public static int Count => lookup.Count;
-        public static IReadOnlyDictionary<int, HierarchyItem> Items => lookup;
+        public static IReadOnlyDictionary<EntityId, HierarchyItem> Items => lookup;
         private static Settings s_Settings => HierarchyDecorator.Settings;
 
         public static HierarchyItem Current { get; private set; }
@@ -46,8 +46,8 @@ namespace HierarchyDecorator
         {
             lookup.Clear();
 
-            EditorApplication.hierarchyWindowItemOnGUI -= OnGUI;
-            EditorApplication.hierarchyWindowItemOnGUI += OnGUI;
+            EditorApplication.hierarchyWindowItemByEntityIdOnGUI -= OnGUI;
+            EditorApplication.hierarchyWindowItemByEntityIdOnGUI += OnGUI;
 
             EditorSceneManager.sceneOpened -= OnSceneOpen;
             EditorSceneManager.sceneOpened += OnSceneOpen;
@@ -86,7 +86,7 @@ namespace HierarchyDecorator
 
         // - GUI
 
-        public static void OnGUI(int id, Rect rect)
+        public static void OnGUI(EntityId id, Rect rect)
         {
             if (EditorApplication.isUpdating)
             {
@@ -135,9 +135,9 @@ namespace HierarchyDecorator
             HierarchyInfo.ResetIndent();
         }
 
-        private static bool TryGetValidInstance(int id, out HierarchyItem item)
+        private static bool TryGetValidInstance(EntityId id, out HierarchyItem item)
         {
-            GameObject instance = EditorUtility.InstanceIDToObject(id) as GameObject;
+            GameObject instance = EditorUtility.EntityIdToObject(id) as GameObject;
 
             if (instance == null)
             {
@@ -149,7 +149,7 @@ namespace HierarchyDecorator
             return true;
         }
 
-        private static HierarchyItem GetNext(int id, GameObject instance)
+        private static HierarchyItem GetNext(EntityId id, GameObject instance)
         {
             if (!lookup.TryGetValue(id, out HierarchyItem item))
             {

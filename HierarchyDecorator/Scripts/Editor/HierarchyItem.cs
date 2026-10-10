@@ -11,7 +11,7 @@ namespace HierarchyDecorator
         /// <summary>
         /// The ID for the hierarchy item.
         /// </summary>
-        public readonly int ID;
+        public readonly EntityId ID;
 
         /// <summary>
         /// The GameObject this item represents.
@@ -70,7 +70,7 @@ namespace HierarchyDecorator
         /// </summary>
         /// <param name="id">The instance ID.</param>
         /// <param name="instance">The gameobject this iunstance represents.</param>
-        public HierarchyItem(int id, GameObject instance)
+        public HierarchyItem(EntityId id, GameObject instance)
         {
             ID = id;
 
